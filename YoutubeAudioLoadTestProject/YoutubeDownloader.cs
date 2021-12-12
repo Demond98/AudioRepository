@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 using MoreLinq;
 using Xabe.FFmpeg;
 using YoutubeExplode;
@@ -67,44 +66,6 @@ namespace YoutubeAudioLoadTestProject
 			
 			await using var stream = await _youtubeClient.Videos.Streams.GetAsync(streamInfo);
 			await _youtubeClient.Videos.Streams.DownloadAsync(streamInfo, videoFile);
-		}
-
-		private static async Task RunProcess(string videoName)
-		{
-			var process = CreateProcess(videoName);
-			process.Start();
-			var info = await process.StandardOutput.ReadToEndAsync();
-			Console.WriteLine(info);
-			var errors = await process.StandardError.ReadToEndAsync();
-			Console.WriteLine(errors);
-			await process.WaitForExitAsync();
-			
-			if (!process.HasExited)
-				process.Kill();
-		}
-
-		private static Process CreateProcess(string videoName)
-		{
-			var convertedName = videoName
-				.Replace(" ", string.Empty)
-				.Replace("!", string.Empty);
-			
-			var videoFile = $"tempVideos/{convertedName}.mp4";
-			var audioFile = $"audios/{convertedName}.mp3";
-
-			return new ()
-			{
-				StartInfo = new ()
-				{
-					UseShellExecute = false,
-					RedirectStandardInput = false,
-					RedirectStandardOutput = true,
-					RedirectStandardError = true,
-					CreateNoWindow = true,
-					FileName = "ffmpeg/ffmpeg.exe",
-					Arguments = $" -i {videoFile} -vn -f mp3 -ab 320k output {audioFile}"
-				}
-			};
 		}
 
 		private static async Task ConvertAudio(string videoName)
