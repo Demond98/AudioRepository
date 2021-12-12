@@ -35,19 +35,9 @@ namespace YoutubeAudioLoadTestProject
 			}
 
 			var videoNames = streamInfos.Select(t => t.video).ToList();
-			
-			
-			var convertedName = videoNames.First()
-				.Replace(" ", string.Empty)
-				.Replace("!", string.Empty);
-			
-			var videoFile = $"tempVideos/{convertedName}.mp4";
-			var audioFile = $"audios/{convertedName}.mp3";
 
-			var snippets = CreateSnippets();
-			FFmpeg.SetExecutablesPath("ffmpeg/");
-			var nn = await snippets.ExtractAudio(videoFile, audioFile);
-			await nn.Start();
+			foreach (var videoName in videoNames)
+				await ConvertAudio(videoName);
 		}
 
 		private async Task<(IStreamInfo streamInfo, string video)> GetStreamInfo(IVideo video)
@@ -117,8 +107,23 @@ namespace YoutubeAudioLoadTestProject
 			};
 		}
 
+		private static async Task ConvertAudio(string videoName)
+		{
+			var convertedName = videoName
+				.Replace(" ", string.Empty)
+				.Replace("!", string.Empty);
+			
+			var videoFile = $"tempVideos/{convertedName}.mp4";
+			var audioFile = $"audios/{convertedName}.mp3";
+
+			var snippets = CreateSnippets();
+			var conversion = await snippets.ExtractAudio(videoFile, audioFile);
+			await conversion.Start();
+		}
+
 		private static Snippets CreateSnippets()
 		{
+			//TODOD: Говнокод 80 lvl, потому что они почему-то сделали конструктор внутренним, а как создать я хз
 			return (Snippets) typeof(Snippets).GetConstructor(
 				BindingFlags.NonPublic | BindingFlags.Instance,
 				null, Type.EmptyTypes, null)!.Invoke(null);
