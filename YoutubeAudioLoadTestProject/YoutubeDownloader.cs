@@ -60,8 +60,7 @@ namespace YoutubeAudioLoadTestProject
 				.Replace("!", string.Empty);
 				
 			var videoFile = $"tempVideos/{convertedName}.mp4";
-			
-			await using var stream = await _youtubeClient.Videos.Streams.GetAsync(streamInfo);
+
 			await _youtubeClient.Videos.Streams.DownloadAsync(streamInfo, videoFile);
 		}
 
