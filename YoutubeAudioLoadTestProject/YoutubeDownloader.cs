@@ -26,12 +26,9 @@ namespace YoutubeAudioLoadTestProject
 			var streamInfoTasks = videos.Select(async v => await GetStreamInfo(v)).ToList();
 			await Task.WhenAll(streamInfoTasks);
 			var streamInfos = streamInfoTasks.Select(t => t.Result).ToList();
-			
-			foreach (var batchedInfo in streamInfos.Batch(BatchSize))
-			{
-				var downloadTasks = batchedInfo.Select(t => DownloadVideo(t.streamInfo, t.video));
-				await Task.WhenAll(downloadTasks);
-			}
+
+			var downloadTasks = streamInfos.Select(async t => await DownloadVideo(t.streamInfo, t.video)).ToList();
+			await BatchExecutor.Execute(downloadTasks, BatchSize);
 
 			var videoNames = streamInfos.Select(t => t.video).ToList();
 
