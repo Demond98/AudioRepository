@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using MoreLinq;
 using Xabe.FFmpeg;
 using YoutubeExplode;
 using YoutubeExplode.Common;
@@ -8,7 +7,7 @@ using YoutubeExplode.Videos.Streams;
 
 namespace YoutubeAudioLoadTestProject
 {
-    public class YoutubeDownloader
+	public class YoutubeDownloader
 	{
 		private const int BatchSize = 5;
 		

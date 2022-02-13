@@ -1,0 +1,9 @@
+﻿version: '3'
+services:
+  azure-blob-storage:
+    image: mcr.microsoft.com/azure-blob-storage
+    container_name: azure-blob-storage
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+        - "10000:10000"
