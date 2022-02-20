@@ -11,10 +11,10 @@ COPY ["AudioDbWebServer/AudioDbWebServer.csproj", "AudioDbWebServer/"]
 RUN dotnet restore "AudioDbWebServer/AudioDbWebServer.csproj"
 COPY . .
 WORKDIR "/src/AudioDbWebServer"
-RUN dotnet build "AudioDbWebServer.csproj" -c Release -o /app/build
+RUN dotnet build "AudioDbWebServer.csproj" -c Release -o /app/build --no-restore
 
 FROM build AS publish
-RUN dotnet publish "AudioDbWebServer.csproj" -c Release -o /app/publish
+RUN dotnet publish "AudioDbWebServer.csproj" -c Release -o /app/publish --no-restore
 
 FROM base AS final
 WORKDIR /app
