@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Xabe.FFmpeg;
+﻿using System.IO.Compression;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using YoutubeExplode.Videos;
@@ -7,82 +6,41 @@ using YoutubeExplode.Videos.Streams;
 
 namespace YoutubeAudioLoadTestProject
 {
-	public class YoutubeDownloader
+	public static class YoutubeDownloader
 	{
-		private const int BatchSize = 5;
-		
-		private readonly YoutubeClient _youtubeClient;
-
-		public YoutubeDownloader(YoutubeClient youtubeClient)
+		public static async Task Load(string playListAddress)
 		{
-			_youtubeClient = youtubeClient;
-		}
+			var youtube = new YoutubeClient();
+			var videos = await youtube.Playlists.GetVideosAsync(playListAddress);
 
-		public async Task DownloadVideos(string playListAddress)
-		{
-			var videos = await _youtubeClient.Playlists.GetVideosAsync(playListAddress);
-
-			var streamInfoTasks = videos.Select(async v => await GetStreamInfo(v)).ToList();
+			var streamInfoTasks = videos.Select(async v => await GetStreamInfo(youtube, v)).ToList();
 			await Task.WhenAll(streamInfoTasks);
-			var streamInfos = streamInfoTasks.Select(t => t.Result).ToList();
 
-			var downloadTasks = streamInfos.Select(async t => await DownloadVideo(t.streamInfo, t.video)).ToList();
-			await BatchExecutor.Execute(downloadTasks, BatchSize);
-
-			var videoNames = streamInfos.Select(t => t.video).ToList();
-
-			foreach (var videoName in videoNames)
-				await ConvertAudio(videoName);
+			var downloadTasks = streamInfoTasks.Select(async t => await DownloadVideo(youtube, t.Result.streamInfo, t.Result.video)).ToList();
+			await Task.WhenAll(downloadTasks);
 		}
 
-		private async Task<(IStreamInfo streamInfo, string video)> GetStreamInfo(IVideo video)
+		private static async Task<(IStreamInfo streamInfo, string video)> GetStreamInfo(YoutubeClient youtube, IVideo video)
 		{
-			var streamManifest = await _youtubeClient.Videos.Streams.GetManifestAsync(video.Id);
-			
-			var muxedStreamInfos = streamManifest
-				.GetMuxedStreams()
-				.Where(v => v.Container == Container.Mp4)
-				.ToList();
-			
-			var lowestSize = muxedStreamInfos.Min(x => x.Size);
-			var streamInfo = muxedStreamInfos
-				.Where(s => s.Size == lowestSize)
-				.GetWithHighestBitrate();
-			
+			var streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
+
+			var streamInfo = streamManifest.GetAudioStreams().MinBy(z => z.Size);
+
 			return (streamInfo, video.Title);
 		}
 
-		private async Task DownloadVideo(IStreamInfo streamInfo, string videoName)
+		private static async Task DownloadVideo(YoutubeClient youtube, IStreamInfo streamInfo, string videoName)
 		{
 			var convertedName = videoName
 				.Replace(" ", string.Empty)
 				.Replace("!", string.Empty);
-				
-			var videoFile = $"tempVideos/{convertedName}.mp4";
 
-			await _youtubeClient.Videos.Streams.DownloadAsync(streamInfo, videoFile);
-		}
+			var videoFile = $"tempVideos/{convertedName}.mp3";
 
-		private static async Task ConvertAudio(string videoName)
-		{
-			var convertedName = videoName
-				.Replace(" ", string.Empty)
-				.Replace("!", string.Empty);
-			
-			var videoFile = $"tempVideos/{convertedName}.mp4";
-			var audioFile = $"audios/{convertedName}.mp3";
+			using var audioStream = await youtube.Videos.Streams.GetAsync(streamInfo);
+			using var targetStream = File.Create(videoFile);
 
-			var snippets = CreateSnippets();
-			var conversion = await snippets.ExtractAudio(videoFile, audioFile);
-			await conversion.Start();
-		}
-
-		private static Snippets CreateSnippets()
-		{
-			//TODOD: Говнокод 80 lvl, потому что они почему-то сделали конструктор внутренним, а как создать я хз
-			return (Snippets) typeof(Snippets).GetConstructor(
-				BindingFlags.NonPublic | BindingFlags.Instance,
-				null, Type.EmptyTypes, null)!.Invoke(null);
+			await audioStream.CopyToAsync(targetStream);
 		}
 	}
 }

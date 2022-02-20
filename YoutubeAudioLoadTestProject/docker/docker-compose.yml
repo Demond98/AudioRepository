@@ -1,9 +1,13 @@
-﻿version: '3'
+﻿version: '3.7'
 services:
-  azure-blob-storage:
-    image: mcr.microsoft.com/azure-blob-storage
-    container_name: azure-blob-storage
-    environment:
-      ALLOW_EMPTY_PASSWORD: "yes"
+  min-io-service:
+    image: minio/minio
     ports:
-        - "10000:10000"
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - C:/Kek/distr/docker/volumes/storage/minio:/data
+    environment:
+      MINIO_ACCESS_KEY: minio_access_key
+      MINIO_SECRET_KEY: minio_secret_key
+    command: server /minio-image/storage --console-address :9001
