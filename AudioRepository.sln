@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30413.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioDbWebServer", "AudioDbWebServer\AudioDbWebServer.csproj", "{6302C81E-C68D-4955-A219-E7FCA0F30EC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YoutubeAudioLoadTestProject", "YoutubeAudioLoadTestProject\YoutubeAudioLoadTestProject.csproj", "{DCE85F56-022D-4988-B894-E23EE9C7B78B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeAudioLoadTestProject", "YoutubeAudioLoadTestProject\YoutubeAudioLoadTestProject.csproj", "{DCE85F56-022D-4988-B894-E23EE9C7B78B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioDbWebServer", "AudioDbWebServer\AudioDbWebServer.csproj", "{B4DABBA1-540B-4EB6-A0A2-DAE2682581A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6302C81E-C68D-4955-A219-E7FCA0F30EC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6302C81E-C68D-4955-A219-E7FCA0F30EC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6302C81E-C68D-4955-A219-E7FCA0F30EC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6302C81E-C68D-4955-A219-E7FCA0F30EC8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DCE85F56-022D-4988-B894-E23EE9C7B78B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DCE85F56-022D-4988-B894-E23EE9C7B78B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCE85F56-022D-4988-B894-E23EE9C7B78B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCE85F56-022D-4988-B894-E23EE9C7B78B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4DABBA1-540B-4EB6-A0A2-DAE2682581A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4DABBA1-540B-4EB6-A0A2-DAE2682581A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4DABBA1-540B-4EB6-A0A2-DAE2682581A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4DABBA1-540B-4EB6-A0A2-DAE2682581A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
