@@ -6,6 +6,8 @@ using YoutubeExplode;
 
 DirectoryExtensions.DeleteIfExist("tempVideos");
 Directory.CreateDirectory("tempVideos");
-await YoutubeDownloader.Load("PLOuFobkMOG2nB3BJtCoacc06ecrSpmwFA");
+YoutubeDownloader.Load("PLOuFobkMOG2nB3BJtCoacc06ecrSpmwFA").Wait();
+
+Console.ReadKey();
 
 //await FileUploaderV2.Upload();
