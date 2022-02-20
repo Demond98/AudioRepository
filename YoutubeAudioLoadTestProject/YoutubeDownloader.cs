@@ -23,8 +23,7 @@ namespace YoutubeAudioLoadTestProject
 		private static async Task<(IStreamInfo streamInfo, string video)> GetStreamInfo(YoutubeClient youtube, IVideo video)
 		{
 			var streamManifest = await youtube.Videos.Streams.GetManifestAsync(video.Id);
-
-			var streamInfo = streamManifest.GetAudioStreams().MinBy(z => z.Size);
+			var streamInfo = streamManifest.GetAudioOnlyStreams().Where(z => z.Container == Container.WebM).GetWithHighestBitrate();
 
 			return (streamInfo, video.Title);
 		}

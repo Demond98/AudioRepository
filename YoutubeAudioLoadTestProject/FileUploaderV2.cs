@@ -11,11 +11,11 @@ namespace YoutubeAudioLoadTestProject
 	{
 		public static async Task Upload()
 		{
-			const string endpoint = "http://127.0.0.1:9000";
+			const string endpoint = "localhost:9000";
 			const string accessKey = "minio_access_key";
 			const string secretKey = "minio_secret_key";
 			const string location = "us-east-1";
-			const string bucketName = "mymusic";
+			const string bucketName = "music";
 
 			var minio = new MinioClient(endpoint, accessKey, secretKey);
 
@@ -23,8 +23,15 @@ namespace YoutubeAudioLoadTestProject
 			if (!found)
 				await minio.MakeBucketAsync("music", location);
 
-			await minio.PutObjectAsync(bucketName, "kek", "tempVideos/BringIt.mp3", "mp3");
-			await minio.GetObjectAsync(bucketName, "kek", "lol.mp3");
+			await minio.PutObjectAsync(bucketName, "BringIt.mp3", "tempVideos/BringIt.mp3", "application/mpeg");
+
+			Directory.CreateDirectory("kek");
+			await minio.GetObjectAsync(bucketName, "BringIt.mp3", 
+				stream => 
+				{
+					using var fileStream = File.Create("kek/keknul.mp3");
+					stream.CopyTo(fileStream);
+				});
 		}
 	}
 }
