@@ -4,7 +4,7 @@ using Xabe.FFmpeg;
 using YoutubeAudioLoadTestProject;
 using YoutubeExplode;
 
-FileUploader.UploadFile("audios/RedRockForMotherRussia.mp3").Wait();
+//FileUploader.UploadFile("audios/RedRockForMotherRussia.mp3").Wait();
 
 /*FFmpeg.SetExecutablesPath("ffmpeg/");
 
@@ -19,3 +19,7 @@ new YoutubeDownloader(youtube).DownloadVideos("PLOuFobkMOG2nB3BJtCoacc06ecrSpmwF
 
 if (Directory.Exists("tempVideos"))
     Directory.Delete("tempVideos", true);*/
+
+
+Directory.Delete("lol", true);
+await YoutubeDownloaderV2.Load("jWSnW89PAS4");
