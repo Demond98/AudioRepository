@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YoutubeAudioLoadTestProject", "YoutubeAudioLoadTestProject\YoutubeAudioLoadTestProject.csproj", "{DCE85F56-022D-4988-B894-E23EE9C7B78B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioDbWebServer", "AudioDbWebServer\AudioDbWebServer.csproj", "{B4DABBA1-540B-4EB6-A0A2-DAE2682581A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioDbWebServer", "AudioDbWebServer\AudioDbWebServer.csproj", "{B4DABBA1-540B-4EB6-A0A2-DAE2682581A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioUploader", "AudioUploader\AudioUploader.csproj", "{852243C6-0724-4D26-BCE8-D50F0A6BF1B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B4DABBA1-540B-4EB6-A0A2-DAE2682581A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4DABBA1-540B-4EB6-A0A2-DAE2682581A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4DABBA1-540B-4EB6-A0A2-DAE2682581A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{852243C6-0724-4D26-BCE8-D50F0A6BF1B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{852243C6-0724-4D26-BCE8-D50F0A6BF1B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{852243C6-0724-4D26-BCE8-D50F0A6BF1B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{852243C6-0724-4D26-BCE8-D50F0A6BF1B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
