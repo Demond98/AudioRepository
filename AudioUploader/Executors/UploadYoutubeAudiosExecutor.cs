@@ -11,7 +11,7 @@ namespace AudioUploader.Executors
 		public static async Task Execute(UploadYoutubeAudiosCommand command, UploadYoutubeAudiosFunctor functor)
 		{
 			var tasks = command.AudioCodes.Select(async z => await UploadAudio(functor, z));
-			await BatchManager.Execute(tasks, BatchSize);
+			await tasks.Execute(BatchSize);
 		}
 
 		private static async Task UploadAudio(UploadYoutubeAudiosFunctor functor, string audioCode)
