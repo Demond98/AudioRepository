@@ -14,11 +14,13 @@ namespace AudioUploader.Commands
 	{
 		private readonly IMinIOGateway _minIOGateway;
 		private readonly IYouTubeGateway _youTubeGateway;
+		private readonly ILogger<AudiosToUploadCommandHandler> _logger;
 
-		public AudiosToUploadCommandHandler(IMinIOGateway minIOGateway, IYouTubeGateway youTubeGateway)
+		public AudiosToUploadCommandHandler(IMinIOGateway minIOGateway, IYouTubeGateway youTubeGateway, ILogger<AudiosToUploadCommandHandler> logger)
 		{
 			_minIOGateway = minIOGateway;
 			_youTubeGateway = youTubeGateway;
+			_logger = logger;
 		}
 
 		public async Task<Unit> Handle(UploadYoutubeAudiosCommand command, CancellationToken cancellationToken)
@@ -27,7 +29,8 @@ namespace AudioUploader.Commands
 			{
 				GetYoutubeVideoInfo = _youTubeGateway.GetYoutubeVideoInfo,
 				GetAudioStream = _youTubeGateway.GetAudioStream,
-				UploadAudio = _minIOGateway.UploadAudio
+				UploadAudio = _minIOGateway.UploadAudio,
+				LogInformation = z => _logger.LogInformation(z)
 			};
 
 			await UploadYoutubeAudiosExecutor.Execute(command, functor);
