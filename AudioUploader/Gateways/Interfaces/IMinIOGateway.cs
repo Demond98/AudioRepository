@@ -2,7 +2,7 @@
 {
 	public interface IMinIOGateway
 	{
-		Task CreateBucketIfNotExist(string bucketName);
+		Task CreateBucketIfNotExist();
 		Task UploadAudio(Stream audioStream, string videoCode);
 	}
 }

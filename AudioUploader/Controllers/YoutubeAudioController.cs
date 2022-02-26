@@ -18,6 +18,14 @@ namespace AudioUploader.Controllers
 		[HttpPost(Name = "UploadAudios")]
 		public async Task<OkResult> UploadAudios([FromBody] UploadYoutubeAudiosCommand command)
 		{
+			/*
+			 {
+			  "audioCodes": [
+				"1-emQo-7O3Y",
+				"jWSnW89PAS4"
+			  ]
+			}*/
+
 			_ = await _mediator.Send(command);
 
 			return Ok();

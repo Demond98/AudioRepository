@@ -5,7 +5,7 @@ namespace AudioUploader.Gateways.Interfaces
 {
 	public interface IYouTubeGateway
 	{
-		Task<YoutubeVideoInfo> GetYoutubeVideoInfos(IEnumerable<string> videoCodes);
+		Task<YoutubeVideoInfo> GetYoutubeVideoInfo(string videoCode);
 		Task<Stream> GetAudioStream(IStreamInfo streamInfo);
 	}
 }

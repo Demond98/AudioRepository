@@ -1,19 +1,37 @@
 ﻿using AudioUploader.Gateways.Interfaces;
 using AudioUploader.Models.Entities;
+using YoutubeExplode;
 using YoutubeExplode.Videos.Streams;
 
 namespace AudioUploader.Gateways
 {
 	public class YouTubeGateway : IYouTubeGateway
 	{
-		public Task<Stream> GetAudioStream(IStreamInfo streamInfo)
+		private readonly YoutubeClient _youtubeClient;
+
+		public YouTubeGateway()
 		{
-			throw new NotImplementedException();
+			_youtubeClient = new YoutubeClient();
 		}
 
-		public Task<YoutubeVideoInfo> GetYoutubeVideoInfos(IEnumerable<string> videoCodes)
+		private StreamClient StreamClient => _youtubeClient.Videos.Streams;
+
+		public async Task<Stream> GetAudioStream(IStreamInfo streamInfo) => await StreamClient.GetAsync(streamInfo);
+
+		public async Task<YoutubeVideoInfo> GetYoutubeVideoInfo(string videoCode)
 		{
-			throw new NotImplementedException();
+			var streamManifest = await StreamClient.GetManifestAsync(videoCode);
+
+			var streamInfo = streamManifest
+				.GetAudioOnlyStreams()
+				.Where(z => z.Container == Container.WebM)
+				.GetWithHighestBitrate();
+
+			return new()
+			{
+				Code = videoCode,
+				StreamInfo = streamInfo
+			};
 		}
 	}
 }
