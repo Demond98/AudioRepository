@@ -2,7 +2,7 @@
 {
 	public static class BatchManager
 	{
-		public static async Task Execute(IEnumerable<Task> tasks, int batchSize)
+		public static async Task Execute(this IEnumerable<Task> tasks, int batchSize)
 		{
 			var executingTasks = new Task[batchSize];
 
@@ -21,7 +21,7 @@
 			await Task.WhenAll(executingTasks.Where(t => t != null));
 		}
 
-		public static async IAsyncEnumerable<T> ExecuteWithResult<T>(IEnumerable<Task<T>> tasks, int batchSize)
+		public static async IAsyncEnumerable<T> ExecuteWithResult<T>(this IEnumerable<Task<T>> tasks, int batchSize)
 		{
 			var executingTasks = new Task<T>[batchSize];
 

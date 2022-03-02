@@ -13,5 +13,7 @@ namespace AudioUploader.Functors
 
 		//Task UploadAudio(Stream audioStream, string videoCode);
 		public Func<Stream, string, Task> UploadAudio { get; init; }
+
+		public Action<string> LogInformation { get; init; }
 	}
 }
