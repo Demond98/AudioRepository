@@ -23,6 +23,7 @@ namespace YoutubeConsoleUploader
 
 		public async Task<YoutubeVideoInfo> GetYoutubeVideoInfo(string videoCode, bool isAudio = false)
 		{
+			var video = await _youtubeClient.Videos.GetAsync(videoCode);
 			var streamManifest = await StreamClient.GetManifestAsync(videoCode);
 
 			var streamInfo = isAudio
@@ -32,6 +33,7 @@ namespace YoutubeConsoleUploader
 			return new()
 			{
 				Code = videoCode,
+				Title = video.Title,
 				StreamInfo = streamInfo
 			};
 		}
@@ -48,7 +50,6 @@ namespace YoutubeConsoleUploader
 		{
 			return streamManifest
 				.GetMuxedStreams()
-				.Where(z => z.Container == Container.Mp4)
 				.GetWithHighestBitrate();
 		}
 	}

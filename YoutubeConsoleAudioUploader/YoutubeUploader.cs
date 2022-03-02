@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace YoutubeConsoleUploader
@@ -31,17 +32,19 @@ namespace YoutubeConsoleUploader
 		private async Task UploadAudio(string code)
 		{
 			var youtubeVideoInfo = await _youTubeGateway.GetYoutubeVideoInfo(code, _setting.IsAudio);
-			Console.WriteLine($"Yotube stream info extracted - Code = {youtubeVideoInfo.Code}");
+			var title = NormilizeTitle(youtubeVideoInfo.Title);
+			var extention = youtubeVideoInfo.StreamInfo.Container.Name;
+			Console.WriteLine($"Yotube stream info extracted - Code = {youtubeVideoInfo.Code}, Name = {title}");
 
 			using var stream = await _youTubeGateway.GetVideoStream(youtubeVideoInfo.StreamInfo);
-			Console.WriteLine($"Youtube stream extracted - Code = {youtubeVideoInfo.Code}");
+			Console.WriteLine($"Youtube stream extracted - Code = {youtubeVideoInfo.Code}, Name = {title}");
 
-			using var fileStream = File.Create($"{VideosPath}/{code}.{Extension}");
-			stream.Seek(0, SeekOrigin.Begin);
+			using var fileStream = File.Create(Path.Combine(VideosPath, $"{title}.{extention}"));
 			await stream.CopyToAsync(fileStream);
-			fileStream.Close();
 
-			Console.WriteLine($"Data uploaded - Code = {youtubeVideoInfo.Code}");
+			Console.WriteLine($"Data uploaded - Code = {youtubeVideoInfo.Code}, Name = {title}");
 		}
+
+		private static string NormilizeTitle(string title) => new Regex("[\\/:?]").Replace(title, "_");
 	}
 }
