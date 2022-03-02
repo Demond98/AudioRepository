@@ -26,5 +26,27 @@ namespace AudioDbWebServer.Controller
 		{
 			return await Db.Connection.QuerySingleAsync<Audio>(@$"SELECT * FROM Audios WHERE Id = {id} LIMIT 1");
 		}
+
+		[HttpGet("playlists")]
+		public async Task<IEnumerable<Playlist>> GetPlaylists()
+		{
+			return await Db.Connection.QueryAsync<Playlist>(@$"SELECT * FROM Playlist");
+		}
+
+		[HttpGet("playlists/{id}")]
+		public async Task<Playlist> GetPlaylist(int id)
+		{
+			return await Db.Connection.QuerySingleAsync<Playlist>(@$"SELECT * FROM Playlist WHERE Id = {id} LIMIT 1");
+		}
+
+		[HttpGet("playlists/audios/{id}")]
+		public async Task<IEnumerable<Audio>> GetPlaylistAudios(int playlistAudios)
+		{
+			return await Db.Connection.QueryAsync<Audio>(@$"
+SELECT * FROM Playlist
+WHERE PlaylistId = {playlistAudios}
+LEFT JOIN PlaylistAduio AS pa
+ON pa.Id = Playlist.Id");
+		}
 	}
 }
